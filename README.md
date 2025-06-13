@@ -5,7 +5,7 @@
 
 ## Comparative Analysis of Deep Reinforcement Learning Algorithms for Autonomous UAV Navigation in MuJoCo Simulation Environment
 
-This repository contains the implementation code for my **Master's Dissertation** at BITS Pilani Dubai Campus, supervised by Dr. Sujala D. Shetty. The project evaluates and compares seven state-of-the-art deep reinforcement learning algorithms for autonomous quadcopter hovering control using the Bitcraze Crazyflie 2.0 model in MuJoCo physics simulation.
+This repository contains the implementation code for my **Master's Dissertation**. The project evaluates and compares seven state-of-the-art deep reinforcement learning algorithms for autonomous quadcopter hovering control using the Bitcraze Crazyflie 2.0 model in MuJoCo physics simulation.
 
 ## 📋 Abstract
 
