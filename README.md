@@ -1,8 +1,9 @@
 # 🚁 Crazyflie Reinforcement Learning Project
 
+[Screencast from 05-28-2025 03:28:21 PM.webm](https://github.com/user-attachments/assets/63ecfeb7-8ff0-4766-8ab6-6d1c3a7abc73)
+
+
 ## Comparative Analysis of Deep Reinforcement Learning Algorithms for Autonomous UAV Navigation in MuJoCo Simulation Environment
-
-
 
 This repository contains the implementation code for my **Master's Dissertation** at BITS Pilani Dubai Campus, supervised by Dr. Sujala D. Shetty. The project evaluates and compares seven state-of-the-art deep reinforcement learning algorithms for autonomous quadcopter hovering control using the Bitcraze Crazyflie 2.0 model in MuJoCo physics simulation.
 
