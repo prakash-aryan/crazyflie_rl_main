@@ -1,38 +1,38 @@
-# 🚁 Crazyflie Reinforcement Learning Project
+# Crazyflie Reinforcement Learning
 
 [Screencast from 05-28-2025 03:28:21 PM.webm](https://github.com/user-attachments/assets/63ecfeb7-8ff0-4766-8ab6-6d1c3a7abc73)
 
 
-## Comparative Analysis of Deep Reinforcement Learning Algorithms for Autonomous UAV Navigation in MuJoCo Simulation Environment
+## Comparative Analysis of Deep RL Algorithms for Autonomous UAV Navigation in MuJoCo
 
-This repository contains the implementation code for my **Master's Dissertation**. The project evaluates and compares seven state-of-the-art deep reinforcement learning algorithms for autonomous quadcopter hovering control using the Bitcraze Crazyflie 2.0 model in MuJoCo physics simulation.
+Implementation code for my Master's Dissertation. The project compares seven deep reinforcement learning algorithms for quadcopter hovering control using the Bitcraze Crazyflie 2.0 model in MuJoCo.
 
-## 📋 Abstract
+## Abstract
 
-This research investigates the performance of seven distinct deep reinforcement learning algorithms applied to UAV navigation and hovering tasks within the MuJoCo physics simulation environment. The study implements and evaluates **DQN**, **Dueling DQN**, **PPO**, **SAC**, **TD3**, **REDQ**, and **Dreamer** algorithms for autonomous quadcopter control, focusing on achieving stable hovering while maintaining precise position control in three-dimensional space.
+This work evaluates seven deep reinforcement learning algorithms — **DQN**, **Dueling DQN**, **PPO**, **SAC**, **TD3**, **REDQ**, and **Dreamer** — for autonomous quadcopter hovering and position control in the MuJoCo physics simulation environment.
 
-## 🎯 Key Findings
+## Key Findings
 
-- **SAC** achieves exceptional sample efficiency with convergence in only 32 training episodes
-- **PPO** delivers superior position accuracy with 53.3% of flight time within 0.1 meters of target
-- **TD3** attains the highest cumulative rewards but requires extensive training investment
-- **REDQ** provides balanced performance across multiple evaluation criteria
-- Continuous action algorithms generally outperform discrete action methods for fine-grained positioning tasks
+- **SAC** converges in only 32 training episodes (best sample efficiency)
+- **PPO** keeps 53.3% of flight time within 0.1m of target (best position accuracy)
+- **TD3** reaches the highest cumulative rewards but needs more training time
+- **REDQ** performs well across all evaluation criteria
+- Continuous action algorithms outperform discrete ones for fine-grained positioning
 
-## 🛠️ System Requirements
+## System Requirements
 
 ### Hardware
-- **GPU**: NVIDIA GeForce RTX 4070 or similar (CUDA-compatible)
-- **RAM**: Minimum 8GB (16GB recommended)
-- **Storage**: At least 2GB free space for models and logs
+- **GPU**: NVIDIA RTX 4070 or similar (CUDA-compatible)
+- **RAM**: 8GB minimum, 16GB recommended
+- **Storage**: 2GB free space for models and logs
 
 ### Software
-- **OS**: Ubuntu 22.04 LTS (tested only on Ubuntu)
-- **Python**: 3.10 or higher
-- **CUDA**: 12.8 (or compatible version with your GPU)
-- **UV**: Package manager for Python dependencies
+- **OS**: Ubuntu 22.04 LTS (only tested on Ubuntu)
+- **Python**: 3.10+
+- **CUDA**: 12.8 (or compatible version)
+- **UV**: Python package manager
 
-## 🚀 Installation
+## Installation
 
 ### 1. Clone the Repository
 
@@ -47,39 +47,31 @@ If you don't have UV installed:
 
 ```bash
 curl -LsSf https://astral.sh/uv/install.sh | sh
-# Restart your shell or run:
 source ~/.bashrc
 ```
 
 ### 3. Create Virtual Environment and Install Dependencies
 
 ```bash
-# Create virtual environment with UV
 uv venv
-
-# Activate the virtual environment
 source .venv/bin/activate
-
-# Install dependencies using UV
 uv pip install -r requirements.txt
 ```
 
 ### 4. Verify Installation
-
-Check if CUDA is available and MuJoCo is properly installed:
 
 ```bash
 python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}')"
 python -c "import mujoco; print('MuJoCo installed successfully')"
 ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 crazyflie_rl_main/
-├── src/                          # Source code directory
+├── src/                          # Source code
 │   ├── config.py                 # Configuration settings
-│   ├── train_*.py               # Training scripts for each algorithm
+│   ├── train_*.py                # Training scripts for each algorithm
 │   │   ├── train_dqn.py
 │   │   ├── train_dueling_dqn.py
 │   │   ├── train_ppo.py
@@ -87,7 +79,7 @@ crazyflie_rl_main/
 │   │   ├── train_td3.py
 │   │   ├── train_redq.py
 │   │   └── train_dreamer.py
-│   └── test_*.py                # Testing scripts for each algorithm
+│   └── test_*.py                 # Testing scripts for each algorithm
 │       ├── test_dqn.py
 │       ├── test_dueling_dqn.py
 │       ├── test_ppo.py
@@ -95,171 +87,128 @@ crazyflie_rl_main/
 │       ├── test_td3.py
 │       ├── test_rdq.py
 │       └── test_dreamer.py
-├── models/                      # Pre-trained model checkpoints
-├── assets/                      # Additional assets
-├── scene_*.xml                  # MuJoCo scene files for each algorithm
-├── cf2.xml                      # Crazyflie 2.0 model definition
-├── cf2.png                      # Crazyflie 2.0 texture
-├── comparison_graphs.py         # Performance analysis and visualization
-├── requirements.txt             # Python dependencies
-└── README.md                    # This file
+├── models/                       # Pre-trained model checkpoints
+├── assets/                       # Additional assets
+├── scene_*.xml                   # MuJoCo scene files for each algorithm
+├── cf2.xml                       # Crazyflie 2.0 model definition
+├── cf2.png                       # Crazyflie 2.0 texture
+├── comparison_graphs.py          # Performance analysis and visualization
+├── requirements.txt              # Python dependencies
+└── README.md
 ```
 
-## 🎮 Usage
+## Usage
 
-### Training Models
+### Training
 
-Each algorithm has its dedicated training script. To train a specific algorithm:
+Each algorithm has a dedicated training script:
 
 ```bash
-# Activate virtual environment
 source .venv/bin/activate
 
-# Train Deep Q-Network
-python src/train_dqn.py
-
-# Train Dueling DQN
-python src/train_dueling_dqn.py
-
-# Train Proximal Policy Optimization
-python src/train_ppo.py
-
-# Train Soft Actor-Critic
-python src/train_sac.py
-
-# Train Twin Delayed DDPG
-python src/train_td3.py
-
-# Train Randomized Ensembled Double Q-learning
-python src/train_redq.py
-
-# Train Dreamer
-python src/train_dreamer.py
+python src/train_dqn.py           # DQN
+python src/train_dueling_dqn.py   # Dueling DQN
+python src/train_ppo.py           # PPO
+python src/train_sac.py           # SAC
+python src/train_td3.py           # TD3
+python src/train_redq.py          # REDQ
+python src/train_dreamer.py       # Dreamer
 ```
 
-### Testing Pre-trained Models
-
-To evaluate trained models:
+### Testing
 
 ```bash
-# Test any algorithm (replace with desired algorithm)
-python src/test_sac.py     # Test SAC model
-python src/test_ppo.py     # Test PPO model
-python src/test_td3.py     # Test TD3 model
-# ... and so on
+python src/test_sac.py
+python src/test_ppo.py
+python src/test_td3.py
+# etc.
 ```
-
-
-
 
 ### Model Naming Convention
 ```
 crazyflie_{algorithm}_{type}_{episode}.pth
 
 Examples:
-- crazyflie_sac_best.pth           # Best SAC model
-- crazyflie_ppo_checkpoint_1000.pth # PPO checkpoint at episode 1000
-- crazyflie_td3_best_avg.pth       # TD3 model with best average performance
+- crazyflie_sac_best.pth
+- crazyflie_ppo_checkpoint_1000.pth
+- crazyflie_td3_best_avg.pth
 ```
 
-## 🔧 Configuration
+## Configuration
 
-Algorithm hyperparameters and training settings can be modified in `src/config.py`. Key parameters include:
+Hyperparameters and training settings are in `src/config.py`:
 
-- **Learning rates**: Different for each algorithm
-- **Network architectures**: Hidden layer sizes and activation functions
-- **Training episodes**: Total number of training episodes
-- **Evaluation frequency**: How often to evaluate and save models
-- **Curriculum learning**: Progressive difficulty settings
+- Learning rates (per algorithm)
+- Network architectures
+- Training episodes
+- Evaluation frequency
+- Curriculum learning settings
 
-## 📊 Performance Metrics
+## Performance Metrics
 
-The project evaluates algorithms based on:
+Algorithms are evaluated on:
 
-1. **Training Efficiency**: Episodes required for convergence
-2. **Hovering Precision**: Distance from target position
-3. **Flight Stability**: Consistency of control
-4. **Sample Efficiency**: Learning speed
-5. **Computational Requirements**: Training time and resource usage
+1. **Training Efficiency** — episodes to convergence
+2. **Hovering Precision** — distance from target position
+3. **Flight Stability** — consistency of control
+4. **Sample Efficiency** — learning speed
+5. **Computational Cost** — training time and resources
 
-## 🎯 Scene Files
+## Scene Files
 
-Each algorithm uses a specific MuJoCo scene file optimized for its characteristics:
+Each algorithm uses a MuJoCo scene file tuned for its characteristics:
 
-- `scene_dqn.xml` - Deep Q-Network environment
-- `scene_dueling_dqn.xml` - Dueling DQN environment  
-- `scene_ppo.xml` - PPO environment
-- `scene_sac.xml` - SAC environment
-- `scene_td3.xml` - TD3 environment
-- `scene_redq.xml` - REDQ environment
-- `scene_dreamer.xml` - Dreamer environment
+- `scene_dqn.xml`, `scene_dueling_dqn.xml`, `scene_ppo.xml`, `scene_sac.xml`, `scene_td3.xml`, `scene_redq.xml`, `scene_dreamer.xml`
 
-## 📈 Results Summary
-
-Based on extensive experimentation:
+## Results
 
 | Algorithm    | Sample Efficiency | Position Accuracy | Training Time | Best Use Case |
-|--------------|------------------|-------------------|---------------|---------------|
-| **SAC**      | ⭐⭐⭐⭐⭐         | ⭐⭐⭐⭐           | ⭐⭐⭐⭐⭐      | Quick deployment |
-| **PPO**      | ⭐⭐⭐            | ⭐⭐⭐⭐⭐         | ⭐⭐⭐⭐        | Precise control |
-| **TD3**      | ⭐⭐⭐            | ⭐⭐⭐⭐           | ⭐⭐           | Maximum performance |
-| **REDQ**     | ⭐⭐⭐⭐           | ⭐⭐⭐⭐           | ⭐⭐⭐         | Balanced approach |
-| **DQN**      | ⭐⭐              | ⭐⭐⭐             | ⭐⭐⭐         | Simple discrete control |
-| **Dueling DQN** | ⭐⭐⭐         | ⭐⭐⭐             | ⭐⭐⭐         | Improved DQN |
-| **Dreamer**  | ⭐⭐              | ⭐⭐               | ⭐⭐           | Research/exploration |
+|--------------|:-:|:-:|:-:|---------------|
+| **SAC**      | High | High | Low | Quick deployment |
+| **PPO**      | Medium | Highest | Medium | Precise control |
+| **TD3**      | Medium | High | High | Maximum performance |
+| **REDQ**     | High | High | Medium | Balanced approach |
+| **DQN**      | Low | Medium | Medium | Simple discrete control |
+| **Dueling DQN** | Medium | Medium | Medium | Improved DQN |
+| **Dreamer**  | Low | Low | High | Research / exploration |
 
-## 🔍 Troubleshooting
+## Troubleshooting
 
-### Common Issues
+**CUDA not available**
+```bash
+nvidia-smi
+uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+```
 
-1. **CUDA not available**
-   ```bash
-   # Check NVIDIA driver
-   nvidia-smi
-   
-   # Reinstall PyTorch with CUDA support
-   uv pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
-   ```
+**MuJoCo installation issues**
+```bash
+sudo apt-get update
+sudo apt-get install libglfw3-dev libgl1-mesa-dev libxinerama-dev libxcursor-dev libxi-dev
+uv pip install mujoco>=3.0.0
+```
 
-2. **MuJoCo installation issues**
-   ```bash
-   # Install MuJoCo dependencies
-   sudo apt-get update
-   sudo apt-get install libglfw3-dev libgl1-mesa-dev libxinerama-dev libxcursor-dev libxi-dev
-   
-   # Reinstall MuJoCo
-   uv pip install mujoco>=3.0.0
-   ```
+**Virtual environment activation**
+```bash
+cd crazyflie_rl_main
+source .venv/bin/activate
+```
 
-3. **Virtual environment activation**
-   ```bash
-   # Make sure you're in the project directory
-   cd crazyflie_rl
-   source .venv/bin/activate
-   ```
+## Dependencies
 
-## 📚 Dependencies
+- `torch>=2.0.0` — deep learning framework
+- `numpy>=1.21.0` — numerical computing
+- `mujoco>=3.0.0` — physics simulation
+- `tensorboard>=2.10.0` — training visualization
+- `matplotlib>=3.5.0` — plotting
+- `scipy>=1.9.0` — scientific computing
+- `gymnasium>=0.26.0` — RL environment interface
+- `opencv-python>=4.5.0` — computer vision
 
-Core dependencies as specified in `requirements.txt`:
-
-- `torch>=2.0.0` - Deep learning framework
-- `numpy>=1.21.0` - Numerical computations
-- `mujoco>=3.0.0` - Physics simulation
-- `tensorboard>=2.10.0` - Training visualization
-- `matplotlib>=3.5.0` - Plotting and visualization
-- `scipy>=1.9.0` - Scientific computing
-- `gymnasium>=0.26.0` - RL environment interface
-- `opencv-python>=4.5.0` - Computer vision utilities
-
-## 📄 Publication
-
-This dissertation is available on SSRN:
+## Publication
 
 **Aryan, Prakash**, *Comparative Analysis of Deep Reinforcement Learning Algorithms for Autonomous UAV Navigation in MuJoCo Simulation Environment Dissertation* (June 03, 2025). Available at SSRN: [https://ssrn.com/abstract=5398703](https://ssrn.com/abstract=5398703) or [http://dx.doi.org/10.2139/ssrn.5398703](http://dx.doi.org/10.2139/ssrn.5398703)
 
-## 📖 Citation
-
-If you use this code in your research, please cite:
+## Citation
 
 ```bibtex
 @mastersthesis{aryan2025comparative,
@@ -273,27 +222,25 @@ If you use this code in your research, please cite:
 }
 ```
 
-## 👨‍💻 Author
+## Author
 
-**Prakash Aryan**  
-Master's Student, BITS Pilani Dubai Campus  
-ID: 2023H1120010U  
-📧 [Contact](https://github.com/prakash-aryan)
+**Prakash Aryan**
+Master's Student, BITS Pilani Dubai Campus
+ID: 2023H1120010U
+[GitHub](https://github.com/prakash-aryan)
 
 **Supervisor**: Dr. Sujala D. Shetty, Associate Professor, BITS Pilani Dubai Campus
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-Special thanks to:
 - **Dr. Sujala D. Shetty** for supervision and guidance
 - **Dr. Sebastiano Panichella** and **Prof. Dr. Timo Kehrer** from University of Bern
-- **BITS Pilani Dubai Campus** for providing research facilities
-- The open-source community for the tools and libraries used in this project
+- **BITS Pilani Dubai Campus** for research facilities
 
-## 📝 Research Context
+## Research Context
 
-This implementation serves as the practical foundation for the dissertation **"Comparative Analysis of Deep Reinforcement Learning Algorithms for Autonomous UAV Navigation in MuJoCo Simulation Environment"** submitted to BITS Pilani Dubai Campus in June 2025. The research contributes empirical insights into deep reinforcement learning for UAV navigation, providing practical guidance for algorithm selection in autonomous aerial vehicle applications.
+This code is the practical foundation for the dissertation "Comparative Analysis of Deep Reinforcement Learning Algorithms for Autonomous UAV Navigation in MuJoCo Simulation Environment" submitted to BITS Pilani Dubai Campus in June 2025.
 
 ---
 
-*This project is part of academic research and is intended for educational and research purposes. The code and methodologies have been developed as part of a Master's dissertation course.*
+*Academic research project developed as part of a Master's dissertation.*
