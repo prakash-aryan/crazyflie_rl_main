@@ -313,7 +313,8 @@ def get_observation():
                 angvel / 5.0,                 # 3 - normalized angular velocity
                 controls[:1] / 0.35,          # 1 - normalized thrust
                 controls[1:] / 0.05,          # 3 - normalized moments
-                np.array([target_dist]) / 2.0 # 1 - normalized distance to target
+                [target_dist / 2.0],          # 1 - normalized distance to target
+                [np.tanh(pos[2] - 1.0)]       # 1 - height error feature
             ])
             
             return obs.astype(np.float32)
@@ -665,7 +666,12 @@ def training_loop():
 def main():
     """Main function"""
     global training_active, viewer_handle
-    
+
+    import argparse
+    parser = argparse.ArgumentParser(description='Train SAC Crazyflie')
+    parser.add_argument('--headless', action='store_true', help='Run without viewer')
+    args = parser.parse_args()
+
     try:
         print("Initializing SAC training...")
         print("Key features:")
@@ -675,27 +681,32 @@ def main():
         print("- Prioritized experience replay")
         print("- Dense reward shaping")
         print("- Conservative action space")
-        
+
         initialize_simulation()
         print("Simulation initialized!")
-        
+
         # Start training thread
         training_thread = threading.Thread(target=training_loop, daemon=True)
         training_thread.start()
-        
-        print("\nTraining started! Close the viewer to stop.")
-        
-        # Launch viewer
-        with mujoco.viewer.launch_passive(model, data) as viewer_handle:
-            while viewer_handle.is_running() and training_active:
-                with sim_lock:
-                    viewer_handle.sync()
-                time.sleep(0.01)
-        
+
+        if args.headless:
+            print("\nTraining started in headless mode. Press Ctrl+C to stop.")
+            try:
+                training_thread.join()
+            except KeyboardInterrupt:
+                print("\nStopping training...")
+        else:
+            print("\nTraining started! Close the viewer to stop.")
+            with mujoco.viewer.launch_passive(model, data) as viewer_handle:
+                while viewer_handle.is_running() and training_active:
+                    with sim_lock:
+                        viewer_handle.sync()
+                    time.sleep(0.01)
+
         # Cleanup
         training_active = False
         training_thread.join(timeout=5.0)
-            
+
     except Exception as e:
         print(f"Error: {e}")
         import traceback

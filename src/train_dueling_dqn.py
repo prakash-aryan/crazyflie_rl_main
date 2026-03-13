@@ -626,7 +626,12 @@ def training_loop():
 def main():
     """Main function"""
     global training_active, viewer_handle
-    
+
+    import argparse
+    parser = argparse.ArgumentParser(description='Train Dueling DQN Crazyflie')
+    parser.add_argument('--headless', action='store_true', help='Run without viewer')
+    args = parser.parse_args()
+
     try:
         print("Initializing Dueling DQN training...")
         print("Key improvements over vanilla DQN:")
@@ -634,27 +639,32 @@ def main():
         print("- Better learning for states with clear value hierarchy")
         print("- Improved convergence for hovering task")
         print("- Enhanced reward structure for value/advantage separation")
-        
+
         initialize_simulation()
         print("Simulation initialized!")
-        
+
         # Start training thread
         training_thread = threading.Thread(target=training_loop, daemon=True)
         training_thread.start()
-        
-        print("\nTraining started! Close the viewer to stop.")
-        
-        # Launch viewer
-        with mujoco.viewer.launch_passive(model, data) as viewer_handle:
-            while viewer_handle.is_running() and training_active:
-                with sim_lock:
-                    viewer_handle.sync()
-                time.sleep(0.01)
-        
+
+        if args.headless:
+            print("\nTraining started in headless mode. Press Ctrl+C to stop.")
+            try:
+                training_thread.join()
+            except KeyboardInterrupt:
+                print("\nStopping training...")
+        else:
+            print("\nTraining started! Close the viewer to stop.")
+            with mujoco.viewer.launch_passive(model, data) as viewer_handle:
+                while viewer_handle.is_running() and training_active:
+                    with sim_lock:
+                        viewer_handle.sync()
+                    time.sleep(0.01)
+
         # Cleanup
         training_active = False
         training_thread.join(timeout=5.0)
-            
+
     except Exception as e:
         print(f"Error: {e}")
         import traceback

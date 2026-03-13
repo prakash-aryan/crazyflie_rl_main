@@ -542,7 +542,12 @@ def training_loop():
 def main():
     """Main function with training loop"""
     global training_active, viewer_handle
-    
+
+    import argparse
+    parser = argparse.ArgumentParser(description='Train DQN Crazyflie')
+    parser.add_argument('--headless', action='store_true', help='Run without viewer')
+    args = parser.parse_args()
+
     try:
         print("="*60)
         print("Crazyflie Reinforcement Learning Training")
@@ -551,29 +556,34 @@ def main():
         print("- More conservative action steps")
         print("- Enhanced reward structure")
         print("- Improved stability mechanisms")
-        
+
         initialize_simulation()
         print("Simulation initialized successfully!")
-        
+
         # Start training in a separate thread
         training_thread = threading.Thread(target=training_loop, daemon=True)
         training_thread.start()
-        
-        print("Starting extended training for 5000 episodes...")
-        print("The drone will learn to hover with improved stability.")
-        print("Close the viewer window to stop training.")
-        
-        # Launch viewer in main thread
-        with mujoco.viewer.launch_passive(model, data) as viewer_handle:
-            while viewer_handle.is_running() and training_active:
-                with sim_lock:
-                    viewer_handle.sync()
-                time.sleep(0.01)
-        
+
+        if args.headless:
+            print("Starting extended training for 5000 episodes in headless mode...")
+            print("Press Ctrl+C to stop.")
+            try:
+                training_thread.join()
+            except KeyboardInterrupt:
+                print("\nStopping training...")
+        else:
+            print("Starting extended training for 5000 episodes...")
+            print("Close the viewer window to stop training.")
+            with mujoco.viewer.launch_passive(model, data) as viewer_handle:
+                while viewer_handle.is_running() and training_active:
+                    with sim_lock:
+                        viewer_handle.sync()
+                    time.sleep(0.01)
+
         # Clean shutdown
         training_active = False
         training_thread.join(timeout=5.0)
-                
+
     except Exception as e:
         print(f"Fatal error: {e}")
         import traceback

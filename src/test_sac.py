@@ -187,7 +187,8 @@ def get_observation():
                 angvel / 5.0,                 # 3 - normalized angular velocity
                 controls[:1] / 0.35,          # 1 - normalized thrust
                 controls[1:] / 0.05,          # 3 - normalized moments
-                np.array([target_dist]) / 2.0 # 1 - normalized distance to target
+                [target_dist / 2.0],          # 1 - normalized distance to target
+                [np.tanh(pos[2] - 1.0)]       # 1 - height error feature
             ])
             
             return obs.astype(np.float32)

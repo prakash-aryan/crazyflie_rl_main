@@ -338,23 +338,29 @@ def test_model(policy_net, num_episodes=10):
 def main():
     """Main testing function"""
     global test_active, viewer_handle
-    
+
+    import argparse
+    parser = argparse.ArgumentParser(description='Test DQN Crazyflie Model')
+    parser.add_argument('--episodes', type=int, default=10, help='Number of test episodes')
+    parser.add_argument('--no-viz', action='store_true', help='Disable visualization')
+    args = parser.parse_args()
+
     print("Crazyflie Trained Model Test")
     print("="*40)
-    
+
     # Initialize simulation
     print("Initializing simulation...")
     initialize_simulation()
-    
+
     # Check if models directory exists
     if not os.path.exists('models'):
         print("No models directory found!")
         return
-    
+
     # Look for best average model first, then best single episode
     best_avg_path = 'models/crazyflie_hover_best_avg.pth'
     best_path = 'models/crazyflie_hover_best.pth'
-    
+
     if os.path.exists(best_avg_path):
         checkpoint_path = best_avg_path
         print("Loading best average model...")
@@ -367,47 +373,47 @@ def main():
         if not checkpoints:
             print("No trained models found in models/ directory!")
             return
-        
+
         # Get the latest checkpoint (highest episode number)
         try:
             latest_checkpoint = max(checkpoints, key=lambda x: int(x.split('_')[-1].split('.')[0]))
         except:
             # If parsing fails, just take the last one alphabetically
             latest_checkpoint = sorted(checkpoints)[-1]
-        
+
         checkpoint_path = f"models/{latest_checkpoint}"
         print(f"Loading latest checkpoint: {latest_checkpoint}")
-    
+
     # Load trained model
     policy_net = load_trained_model(checkpoint_path)
     if policy_net is None:
         return
-    
-    print("\nStarting evaluation...")
-    print("Testing with 10 episodes (alternating fixed/randomized conditions)")
-    print("Close the viewer window to end the test.")
-    
+
+    print(f"\nStarting evaluation with {args.episodes} episodes...")
+
     # Start testing in a separate thread
-    test_thread = threading.Thread(target=test_model, args=(policy_net, 10), daemon=True)
+    test_thread = threading.Thread(target=test_model, args=(policy_net, args.episodes), daemon=True)
     test_thread.start()
-    
+
     try:
-        # Launch viewer in main thread
-        with mujoco.viewer.launch_passive(model, data) as viewer_handle:
-            while viewer_handle.is_running() and test_active:
-                with sim_lock:
-                    viewer_handle.sync()
-                time.sleep(0.01)
-        
+        if not args.no_viz:
+            with mujoco.viewer.launch_passive(model, data) as viewer_handle:
+                while viewer_handle.is_running() and test_active:
+                    with sim_lock:
+                        viewer_handle.sync()
+                    time.sleep(0.01)
+        else:
+            test_thread.join()
+
         # Clean shutdown
         test_active = False
         test_thread.join(timeout=5.0)
-        
+
     except Exception as e:
         print(f"Error during testing: {e}")
         import traceback
         traceback.print_exc()
-    
+
     print("\nTest completed!")
 
 if __name__ == "__main__":
