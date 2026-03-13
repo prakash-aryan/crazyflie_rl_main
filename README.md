@@ -101,11 +101,21 @@ crazyflie_rl/
 
 ### Training
 
-Each algorithm has a dedicated training script:
+Each algorithm has a dedicated training script. By default, a MuJoCo viewer window opens to visualize training in real time. Use `--headless` to train without a display (useful for SSH, servers, or CI):
 
 ```bash
 source .venv/bin/activate
 
+# With GUI (default)
+python src/train_sac.py
+
+# Headless (no display required)
+python src/train_sac.py --headless
+```
+
+Available training scripts:
+
+```bash
 python src/train_dqn.py           # DQN
 python src/train_dueling_dqn.py   # Dueling DQN
 python src/train_ppo.py           # PPO
@@ -117,11 +127,17 @@ python src/train_dreamer.py       # Dreamer
 
 ### Testing
 
+Use `--no-viz` to run tests without the viewer:
+
 ```bash
+# With GUI (default)
 python src/test_sac.py
-python src/test_ppo.py
-python src/test_td3.py
-# etc.
+
+# Headless
+python src/test_sac.py --no-viz
+
+# Specify number of test episodes
+python src/test_sac.py --no-viz --episodes 50
 ```
 
 ### Model Naming Convention
