@@ -37,8 +37,8 @@ This work evaluates seven deep reinforcement learning algorithms — **DQN**, **
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/prakash-aryan/crazyflie_rl_main.git
-cd crazyflie_rl_main
+git clone https://github.com/prakash-aryan/crazyflie_rl.git
+cd crazyflie_rl
 ```
 
 ### 2. Install UV Package Manager
@@ -68,7 +68,7 @@ python -c "import mujoco; print('MuJoCo installed successfully')"
 ## Project Structure
 
 ```
-crazyflie_rl_main/
+crazyflie_rl/
 ├── src/                          # Source code
 │   ├── config.py                 # Configuration settings
 │   ├── train_*.py                # Training scripts for each algorithm
@@ -189,7 +189,7 @@ uv pip install mujoco>=3.0.0
 
 **Virtual environment activation**
 ```bash
-cd crazyflie_rl_main
+cd crazyflie_rl
 source .venv/bin/activate
 ```
 
