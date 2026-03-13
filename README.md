@@ -251,21 +251,27 @@ Core dependencies as specified in `requirements.txt`:
 - `gymnasium>=0.26.0` - RL environment interface
 - `opencv-python>=4.5.0` - Computer vision utilities
 
+## 📄 Publication
+
+This dissertation is available on SSRN:
+
+**Aryan, Prakash**, *Comparative Analysis of Deep Reinforcement Learning Algorithms for Autonomous UAV Navigation in MuJoCo Simulation Environment Dissertation* (June 03, 2025). Available at SSRN: [https://ssrn.com/abstract=5398703](https://ssrn.com/abstract=5398703) or [http://dx.doi.org/10.2139/ssrn.5398703](http://dx.doi.org/10.2139/ssrn.5398703)
+
 ## 📖 Citation
 
 If you use this code in your research, please cite:
-(todo)
 
-<!-- ```bibtex
+```bibtex
 @mastersthesis{aryan2025comparative,
   title={Comparative Analysis of Deep Reinforcement Learning Algorithms for Autonomous UAV Navigation in MuJoCo Simulation Environment},
   author={Aryan, Prakash},
   year={2025},
   school={BITS Pilani Dubai Campus},
   supervisor={Dr. Sujala D. Shetty},
-  type={Master's Dissertation}
+  type={Master's Dissertation},
+  note={Available at SSRN: https://ssrn.com/abstract=5398703}
 }
-``` -->
+```
 
 ## 👨‍💻 Author
 
